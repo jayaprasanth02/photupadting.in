@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>my website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-image: url(wp5823298-8k-desktop-hd-wallpapers.jpg);
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background;
+            padding: 20px;
+            box-shadow: ;
+        }
+        .upload-form, .search-form {
+            margin-bottom: 20px;
+        }
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .gallery img {
+            max-width: 100px;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <center><b><h1 style="color: skyblue;">MY WEBSITE</h1> </b></center>
+        
+        <!-- Photo Upload Form -->
+        <div class="upload-form">
+            <h2>Upload Photo</h2>
+            <form id="uploadForm" enctype="multipart/form-data">
+                <input type="file" id="photoInput" name="photo" accept="image/*" required>
+                <button type="submit">Upload</button>
+            </form>
+        </div>
+
+        <!-- Photo Search Form -->
+        <div class="search-form">
+            <h2>Search Photo</h2>
+            <form id="searchForm">
+                <input type="text" id="searchInput" placeholder="Enter keywords">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+
+        <!-- Photo Gallery -->
+        <div class="gallery" id="photoGallery"></div>
+    </div>
+
+    <script>
+        const uploadForm = document.getElementById('uploadForm');
+        const searchForm = document.getElementById('searchForm');
+        const photoGallery = document.getElementById('photoGallery');
+        let photos = [];
+
+        // Handle photo upload
+        uploadForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const fileInput = document.getElementById('photoInput');
+            const file = fileInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    photos.push({ src: e.target.result, keywords: file.name.split('.')[0] });
+                    displayPhotos(photos);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Handle photo search
+        searchForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            const filteredPhotos = photos.filter(photo => photo.keywords.toLowerCase().includes(searchInput));
+            displayPhotos(filteredPhotos);
+        });
+
+        // Function to display photos
+        function displayPhotos(photos) {
+            photoGallery.innerHTML = '';
+            photos.forEach(photo => {
+                const img = document.createElement('img');
+                img.src = photo.src;
+                photoGallery.appendChild(img);
+            });
+        }
+    </script>
+</body>
+</html>
